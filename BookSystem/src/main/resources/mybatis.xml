@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 允许mybatis插入null -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<!-- 配置连接池 -->
+	<mappers>
+		<mapper resource="com/zl/Dao/bookDaoMapper.xml"/>
+		<mapper resource="com/zl/Dao/userDaoMapper.xml"/>
+		<mapper resource="com/zl/Dao/lxDaoMapper.xml"/>
+		<mapper resource="com/zl/Dao/roleDaoMapper.xml"/>
+		<mapper resource="com/zl/Dao/powerDaoMapper.xml"/>
+	</mappers>
+</configuration>

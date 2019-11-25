@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:必须是对应接口的全路径
+ -->
+<mapper namespace="com.zl.Dao.RoleDao">
+	<resultMap type="com.zl.pojo.Role" id="roleAndPower">
+		<id column="r_id" property="rId"/>
+		<result column="rrid" property="rrid"/>
+		<result column="rname" property="rname"/>
+		<collection property="powers" column="r_id" ofType="com.zl.pojo.Power" select="com.zl.Dao.PowerDao.queryPowerByRoleId"></collection>
+		<!-- 
+			select p.* from role_power rp,power p where rp.p_id=p.id and rp.r_id=1
+		 -->
+	</resultMap>
+	<select id="queryRoleById" parameterType="int" resultMap="roleAndPower">
+		select * from r_table where r_id=#{id}
+	</select>
+</mapper>

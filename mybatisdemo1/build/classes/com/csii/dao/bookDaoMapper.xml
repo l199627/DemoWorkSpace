@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:必须是对应接口的全路径 -->
+<mapper namespace="com.csii.dao.BookDao">
+<!-- 通过ID查询图书 -->
+	<select id="findBookById" parameterType="int"
+		resultType="com.csii.entity.Book">
+		select * from book where bookid=#{id}
+	</select>
+	<!-- 查询所有图书 -->
+	<select id="findAllBook" resultType="com.csii.entity.Book">
+		select * from book
+	</select>
+	<!-- 删除图书 -->
+	<delete id="delectBook" parameterType="int">
+		delete from book where bookid=#{id}
+	</delete>
+	<!-- 修改图书 -->
+	<update id="updateBook" parameterType="com.csii.entity.Book">
+		update book set bookname=#{bookname},
+		author=#{author},
+		chubanshe=#{chubanshe},
+		shijian=#{shijian},
+		kucun=#{kucun} where bookid=#{bookid}
+	</update>
+<!-- 	增加图书 -->
+	<insert id="addBook" parameterType="com.csii.entity.Book">
+		insert into book values
+		(#{bookid},#{bookname},#{author},#{chubanshe},#{shijian},#{kucun})
+	</insert>
+</mapper>

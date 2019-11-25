@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:必须是对应接口的全路径 -->
+<mapper namespace="com.zl.Dao.LxDao">
+<select id="findAllLx" resultType="com.zl.pojo.Lx">
+	select * from lxtable
+	</select>
+	<select id="queryLxById" parameterType="int" resultType="com.zl.pojo.Lx">
+		select * from lxtable where lxid=#{lxid}
+	</select>
+</mapper>

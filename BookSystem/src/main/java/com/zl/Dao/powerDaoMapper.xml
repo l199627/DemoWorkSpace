@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:必须是对应接口的全路径
+ -->
+<mapper namespace="com.zl.Dao.PowerDao">
+	<select id="queryPowerByRoleId" parameterType="int" resultType="com.zl.pojo.Power">
+		select p.* from zj_table rp,q_table p where rp.q_id=p.q_id and rp.r_id=#{id}
+	</select>
+</mapper>

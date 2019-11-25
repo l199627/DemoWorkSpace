@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.zl"></context:component-scan>
+	<!-- 引入外部资源文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+<!-- 配置连接池(数据源) -->
+<bean id="dateSources" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 配置产生SqlSession的工厂 :产生数据库连接-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 加载连接池 -->
+		<property name="dataSource" ref="dateSources"></property>
+		<!-- 加载mybatis配置文件 -->
+		<property name="configLocation" value="classpath:mybatis.xml"></property>
+	</bean>
+	<!-- 
+		MapperScannerConfigurer:
+			自动生成dao接口实现类
+			把生成的实现类放置在IOC容器中
+	 -->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 引用sqlsession工厂 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<!-- 告诉接口所在位置 -->
+		<property name="basePackage" value="com.zl.Dao"></property>
+	</bean>
+</beans>

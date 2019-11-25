@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:必须是对应接口的全路径 -->
+<mapper namespace="com.zl.Dao.BookDao">
+<!-- 
+		自定义结果集和实体类的映射关系
+			1. 表字段和实体类属性不一致()
+			2. 级联查询
+		type:该resultMap是什么类型(对应的实体类类型)
+		id:唯一标识
+	 -->
+	<resultMap type="com.zl.pojo.Book" id="bookAndLx">
+		<!-- 专门用来指定主键的映射关系 -->
+		<id column="bookid" property="bookid"/>
+		<!-- 用来指定普通字段的映射关系 -->
+		<result column="bookname" property="bookname"/>
+		<result column="author" property="author"/>
+		<result column="chubanshe" property="chubanshe"/>
+		<result column="shijian" property="shijian"/>
+		<result column="kucun" property="kucun"/>
+		<result column="tupian" property="tupian"/>
+		<!-- 级联查询 
+			association:用来级联查询对象中的对象类型属性
+			property:查询出来的结果赋值个那个属性
+			column:根据结果集中发那个字段查询(外键)
+			javaType:查询出来的结果是什么的类型
+			select:引用那条sql语句
+		-->
+		<association property="lx" column="lxid" javaType="com.zl.pojo.Lx" select="com.zl.Dao.LxDao.queryLxById"></association>
+	</resultMap>
+	<select id="findBookById" parameterType="int"
+		resultMap="bookAndLx">
+		select * from books1 where bookid=#{id}
+	</select>
+	<select id="findAllBook" resultMap="bookAndLx">
+		select * from books1
+	</select>
+	<delete id="delectBook" parameterType="int">
+		delete from books1 where bookid=#{id}
+	</delete>
+	<update id="updateBook" parameterType="com.zl.pojo.Book">
+		update books1 set bookname=#{bookname},
+		lxid=#{lx.lxid},
+		author=#{author},
+		chubanshe=#{chubanshe},
+		shijian=#{shijian},
+		kucun=#{kucun},
+		tupian=#{tupian} where bookid=#{bookid}
+	</update>
+	<insert id="addBook" parameterType="com.zl.pojo.Book">
+		insert into books1 values
+		(books1_seq.nextval,#{bookname},#{lx.lxid},#{author},#{chubanshe},#{shijian},#{kucun},#{tupian})
+	</insert>
+	<select id="queryBookByFy" parameterType="com.zl.pojo.FenYe"
+		resultMap="bookAndLx">
+		select * from (select b.*,rownum r from (select * from books1
+		<where>
+			<if test="query!=null">
+				<if test="query.qbookname!=null and query.qbookname!=''">
+					and bookname like concat('%',concat(#{query.qbookname},'%'))
+				</if>
+				<if test="query.qlxid!=null and query.qlxid!=0">
+					and lxid=#{query.qlxid}
+				</if>
+				<if test="query.qStartshijian!=null">
+					and shijian>#{query.qStartshijian}
+				</if>
+				<if test="query.qEndshijian!=null">
+					and shijian<![CDATA[<]]>#{query.qEndshijian}
+				</if>
+			</if>
+		</where>
+		)b) where r>#{startRow} and r<![CDATA[<=]]>#{endRow}
+	</select>
+	<select id="queryRowCount" parameterType="com.zl.pojo.Query"
+		resultType="int">
+		select count(1) from books1
+		<where>
+			<if test="qbookname!=null and qbookname!=''">
+				and bookname like concat('%',concat(#{qbookname},'%'))
+			</if>
+			<if test="qlxid!=null and qlxid!=0">
+				and lxid=#{qlxid}
+			</if>
+			<if test="qStartshijian!=null">
+				and shijian>#{qStartshijian}
+			</if>
+			<if test="qEndshijian!=null">
+				and shijian<![CDATA[<]]>#{qEndshijian}
+			</if>
+		</where>
+	</select>
+</mapper>

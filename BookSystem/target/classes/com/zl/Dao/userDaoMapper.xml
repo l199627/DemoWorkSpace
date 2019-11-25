@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:必须是对应接口的全路径 -->
+<mapper namespace="com.zl.Dao.UserDao">
+<resultMap type="com.zl.pojo.User" id="userAndRole">
+		<id column="userid" property="userid"/>
+		<result column="username" property="username"/>
+		<result column="userpwd" property="userpwd"/>
+		<association property="role" column="r_id" javaType="com.zl.pojo.Role" select="com.zl.Dao.RoleDao.queryRoleById"></association>
+	</resultMap>
+<select id="login" parameterType="com.zl.pojo.User" resultMap="userAndRole">
+select * from user_table where username=#{username} and userpwd=#{userpwd}
+</select>
+</mapper>
